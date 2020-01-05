@@ -1,20 +1,21 @@
 <template>
-  <div v-if="sceneInstance">
-      <Emitter :scene-instance="sceneInstance"></Emitter>
+  <div>
+    <div v-if="sceneInstance">
+        <Emitter :scene-instance="sceneInstance"></Emitter>
+    </div>
   </div>
 </template>
 
 <script>
-
-import Emitter from './Emitter.vue'
+import Emitter from "./Emitter.vue";
 
 export default {
   name: "Scene",
-  components:{Emitter},
+  components: { Emitter },
   data() {
     return {
       game: this.$store.getters.getGame,
-      sceneInstance:null
+      sceneInstance: null
     };
   },
   mounted() {
@@ -24,7 +25,7 @@ export default {
       {
         preload: function preload() {
           this.load.image("sky", "assets/sky.png");
-          this.load.image("bomb", "assets/bomb.png");
+          this.load.image("star", "assets/star.png");
         },
         create: function create() {
           vm.createScene(this);
@@ -36,7 +37,7 @@ export default {
   },
   methods: {
     createScene(scene) {
-        this.sceneInstance = scene
+      this.sceneInstance = scene;
     }
   }
 };
