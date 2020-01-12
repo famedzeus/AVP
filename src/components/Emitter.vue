@@ -7,7 +7,7 @@
       <input type="number" v-model="emitterProps.particleCreateProps.scaleY" min="0" max="20" /> -->
 
       <!-- Emitter propreties -->
-      <div v-for="(prop,key) in emitterProps" v-if="prop.value">
+      <div v-for="(prop,key) in emitterProps" v-if="prop.min">
         <label :for="key">{{key}}</label>
         <input :id="key" 
             type="number" 
@@ -26,6 +26,11 @@
               @change="emitterProps.particleCreateProps[key].change"
               :min="emitterProps.particleCreateProps[key].min" 
               :max="emitterProps.particleCreateProps[key].max" />
+        <input :id="key" 
+            type="number" 
+            v-model="emitterProps.particleCreateProps[key].audioValue" 
+              min="-100" 
+              max="100" />
       </div>
       <input type="color" name="favcolor" @change="selectColor"/>
 
@@ -61,19 +66,19 @@ export default {
       audioShape:null,
       
       emitterProps:{
-        frequency:{value:100,min:1,max:100,change:()=>{this.changeFrequency()}},
+        frequency:{value:100,min:1,max:500,change:()=>{this.changeFrequency()}},
         life:{value:100,min:1,max:500,change:()=>{}},
-        x:{value:400,min:0,max:800,change:()=>{}},
+        x:{value:1,min:1,max:800,change:()=>{}},
         y:{value:300,min:1,max:600,change:()=>{}},
-        windX:{value:-2,min:-100,max:100,change:()=>{}},
-        windY:{value:-2,min:-100,max:100,change:()=>{}},
+        windX:{value:5,min:-100,audioValue:0,max:100,change:()=>{}},
+        windY:{value:0,min:-100,audioValue:0,max:100,change:()=>{}},
         particleCreateProps:{
-          red:{value:255,min:0,max:255,change:()=>{ }},
-          green:{value:255,min:0,max:255,change:()=>{}},
-          blue:{value:255,min:0,max:255,change:()=>{}},
-          scaleX:{value:1,min:1,max:30,change:()=>{}},
-          scaleY:{value:1,min:1,max:30,change:()=>{}},
-          rotation:{value:1,min:-360,max:360,change:()=>{}}
+          red:{value:255,min:0,max:255,audioValue:0,change:()=>{ }},
+          green:{value:255,min:0,max:255,audioValue:0,change:()=>{}},
+          blue:{value:255,min:0,max:255,audioValue:0,change:()=>{}},
+          scaleX:{value:5,min:1,max:30,audioValue:0,change:()=>{}},
+          scaleY:{value:5,min:1,max:30,audioValue:0,change:()=>{}},
+          angle:{value:0,min:-360,max:360,audioValue:0,change:()=>{}}
         }
       },
 
@@ -102,7 +107,7 @@ export default {
 
         this.audioVolume = this.audioShape.getAudioVolume()
 
-        this.particles.push(new Particle('star',this.sceneInstance,this.emitterProps))
+        this.particles.push(new Particle('star',this.sceneInstance,this.emitterProps,this.audioVolume))
 
         // remove dead particles 
         this.particles = this.particles.filter(particle => {
@@ -114,7 +119,7 @@ export default {
       // Update active particles interval
       this.updateParticles = setInterval(() => {
         this.particles.forEach(particle => {          
-          particle.update()
+          particle.update(this.audioVolume)
         })
       },10)
 

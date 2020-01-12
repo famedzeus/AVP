@@ -1,9 +1,10 @@
 export class Particle {
 
-  constructor(objectKey, sceneInstance, emitterProps){
+  constructor(objectKey, sceneInstance, emitterProps, audioVolume){
     this.particle = sceneInstance.add.image(Number(emitterProps.x.value), Number(emitterProps.y.value), objectKey);
     this.objectKey = objectKey
     this.emitterProps = emitterProps
+    this.audioVolume = audioVolume
 
     this.life = emitterProps.life.value
     this.lifeCount = this.life
@@ -13,10 +14,19 @@ export class Particle {
       this.particle[key] = emitterProps.particleCreateProps[key].value
 
       // Exceptions
+
+      // Apply audio to color
+      // let rotation_v = audioVolume * Number(this.emitterProps.particleCreateProps.rotation.audioValue) || 1
+
+      let red_v = this.volumeFactor(audioVolume, 'red', 10, 255)
+      let green_v = this.volumeFactor(audioVolume, 'green', 10, 255)
+      let blue_v = this.volumeFactor(audioVolume, 'blue', 10, 255)
+
       // Color (tint)
-      let red = this.hexToDec('red')
-      let green = this.hexToDec('green')
-      let blue = this.hexToDec('blue')
+      let red = this.decToHex(Number(this.emitterProps.particleCreateProps['red'].value) + Math.floor(red_v))
+      let green = this.decToHex(Number(this.emitterProps.particleCreateProps['green'].value) + Math.floor(green_v))
+      let blue = this.decToHex(Number(this.emitterProps.particleCreateProps['blue'].value) + Math.floor(blue_v))
+
       let h = `0x${red}${green}${blue}`
       this.particle['tint'] = parseInt(h,16)
     })
@@ -24,20 +34,26 @@ export class Particle {
     this.dead = false
   }
 
-  update(){
+  update(audioVolume){
     
+    // audioVolume = audioVolume / 1000
+
     // Mandatory emitter effects
     this.particle.x += Number(this.emitterProps.windX.value)
     this.particle.y += Number(this.emitterProps.windY.value)
     this.particle.alpha = this.lifeCount/this.life
-    this.particle.rotation += Number(this.emitterProps.particleCreateProps.rotation.value/1000)
 
-    // this.particle.scaleY = Math.random()*10
-    // this.particle.scaleX = 2
-    // this.particle.setRotation(this.rotation)
-    // this.rotation+=0.1
-    // this.particle.tint = 0xff0000
-    // this.particle.setAlpha(0.3,0.7,0.4,1)    
+    // Particle effects
+    
+    // Rotation
+    let angle_v = this.volumeFactor(audioVolume, 'angle', 10)
+    this.particle.angle += Number(this.emitterProps.particleCreateProps.angle.value) * angle_v
+
+    // Scale
+    let scaleX_v = this.volumeFactor(audioVolume, 'scaleX', 10)
+    this.particle.scaleX = Number(this.emitterProps.particleCreateProps.scaleX.value) + scaleX_v
+    let scaleY_v = this.volumeFactor(audioVolume, 'scaleY', 10)
+    this.particle.scaleY = Number(this.emitterProps.particleCreateProps.scaleY.value) + scaleY_v
 
     // Mandatory life effect
     if(this.lifeCount <= 0 && !this.dead){
@@ -49,9 +65,19 @@ export class Particle {
     
   }
 
-  hexToDec(key){
-    let hex = Number(this.emitterProps.particleCreateProps[key].value).toString(16)
-    if(this.emitterProps.particleCreateProps[key].value < 10){
+  volumeFactor(audioVolume,prop, tenuation, clip){
+    let factor = audioVolume * Number(this.emitterProps.particleCreateProps[prop].audioValue)
+    factor = factor == 0 ? 1 : factor
+      // if(clip){
+      //   factor = factor > clip ? clip : factor
+      // }
+    return factor / tenuation
+  }
+
+  decToHex(v){
+    v = v > 255 ? 255 : v
+    let hex = v.toString(16)
+    if(v < 10){
       hex = "0"+hex
     }
     return hex
