@@ -11,6 +11,9 @@ module.exports = {
       poll: true
     }
   },  
+    // resolve: {
+    //   extensions: [ '.tsx', '.ts', '.js' ],
+    // },  
   module: {
     rules: [
       {
@@ -21,6 +24,11 @@ module.exports = {
         test: /\.js$/,
         use: 'babel-loader'
       },
+      // {
+      //   test: /\.tsx?$/,
+      //   use: 'ts-loader',
+      //   exclude: /node_modules/,
+      // },      
       {
         test: /\.js$/,
         use: ["source-map-loader"],
@@ -30,17 +38,27 @@ module.exports = {
         test: /\.css$/,
         use: [
           'vue-style-loader',
-          'css-loader'
-        ]
-      },
-      {
-        test: /\.styl(us)?$/,
-        use: [
-          'vue-style-loader',
           'css-loader',
-          'stylus-loader'
+          // {
+          //   loader: 'sass-loader',
+          //   // Requires sass-loader@^7.0.0
+          //   options: {
+          //     implementation: require('sass'),
+          //     fiber: require('fibers'),
+          //     indentedSyntax: true // optional
+          //   },
+          //   // Requires sass-loader@^8.0.0
+          //   options: {
+          //     implementation: require('sass'),
+          //     sassOptions: {
+          //       fiber: require('fibers'),
+          //       indentedSyntax: true // optional
+          //     }
+          //   }
+          // }          
         ]
       }
+ 
     ]
   },
   plugins: [

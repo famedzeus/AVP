@@ -2,6 +2,11 @@
   <div>
     <div v-if="sceneInstance">
         <Emitter :scene-instance="sceneInstance"></Emitter>
+        <!-- <Emitter :scene-instance="sceneInstance"></Emitter>
+        <Emitter :scene-instance="sceneInstance"></Emitter>
+        <Emitter :scene-instance="sceneInstance"></Emitter>
+        <Emitter :scene-instance="sceneInstance"></Emitter>
+        <Emitter :scene-instance="sceneInstance"></Emitter> -->
     </div>
   </div>
 </template>
