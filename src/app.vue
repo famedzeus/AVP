@@ -38,7 +38,6 @@ export default {
   methods: {
   },
   mounted() {
-    // ab7f3409ee1c8aa143c65c90defedd7b10c89501
     let vm = this
     this.$store.dispatch("setGameConfig", this.gameConfig)
     this.game = new Phaser.Game(this.gameConfig)
