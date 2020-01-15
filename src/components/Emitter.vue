@@ -16,13 +16,27 @@
               :min="prop.min" 
               :max="prop.max" />
       </div>
+      
 
       <!-- Particle propreties -->
       <div v-for="(prop,key) in emitterProps.particleCreateProps">
         <label :for="key">{{key}}</label>
-        <input :id="key" 
+        <Slider :prop="key" 
+                v-model="emitterProps.particleCreateProps[key].value"
+                :min="emitterProps.particleCreateProps[key].min" 
+                :max="emitterProps.particleCreateProps[key].max" 
+                @change="emitterProps.particleCreateProps[key].change">
+        </Slider>
+        <Slider :prop="key" 
+                :audio="true"
+                v-model="emitterProps.particleCreateProps[key].audioValue"
+                :min="-100" 
+                :max="100" 
+                @change="emitterProps.particleCreateProps[key].change">
+        </Slider>
+        <!-- <input :id="key" 
             type="number" 
-            v-model="emitterProps.particleCreateProps[key].value" 
+              v-model="emitterProps.particleCreateProps[key].value" 
               @change="emitterProps.particleCreateProps[key].change"
               :min="emitterProps.particleCreateProps[key].min" 
               :max="emitterProps.particleCreateProps[key].max" />
@@ -30,7 +44,7 @@
             type="number" 
             v-model="emitterProps.particleCreateProps[key].audioValue" 
               min="-100" 
-              max="100" />
+              max="100" /> -->
       </div>
       <input type="color" name="favcolor" @change="selectColor"/>
 
@@ -43,7 +57,7 @@
 
 <script>
 
-// import Joypad from './Joypad.vue'
+import Slider from './Slider.vue'
 import { Particle } from '../classes/Particle.js'
 import { AudioShape } from '../classes/AudioShape.js'
 
@@ -52,7 +66,7 @@ export default {
   props: {
     sceneInstance: Object
   },
-  // components:{Joypad},
+  components:{ Slider },
   data() {
     return {
       particles:[],
@@ -66,19 +80,19 @@ export default {
       audioShape:null,
       
       emitterProps:{
-        frequency:{value:100,min:1,max:500,change:()=>{this.changeFrequency()}},
-        life:{value:100,min:1,max:500,change:()=>{}},
-        x:{value:1,min:1,max:800,change:()=>{}},
-        y:{value:300,min:1,max:600,change:()=>{}},
-        windX:{value:5,min:-100,audioValue:0,max:100,change:()=>{}},
-        windY:{value:0,min:-100,audioValue:0,max:100,change:()=>{}},
+        frequency:{value:"100",min:1,max:500,change:()=>{this.changeFrequency()}},
+        life:{value:"100",min:1,max:500,change:(item)=>{ this.change(item)}},
+        x:{value:"1",min:1,max:800,change:(item)=>{ this.change(item)}},
+        y:{value:"300",min:1,max:600,change:(item)=>{ this.change(item)}},
+        windX:{value:"5",min:-100,audioValue:"0",max:100,change:(item)=>{ this.change(item)}},
+        windY:{value:"0",min:-100,audioValue:"0",max:100,change:(item)=>{ this.change(item)}},
         particleCreateProps:{
-          red:{value:255,min:0,max:255,audioValue:0,change:()=>{ }},
-          green:{value:255,min:0,max:255,audioValue:0,change:()=>{}},
-          blue:{value:255,min:0,max:255,audioValue:0,change:()=>{}},
-          scaleX:{value:5,min:1,max:30,audioValue:0,change:()=>{}},
-          scaleY:{value:5,min:1,max:30,audioValue:0,change:()=>{}},
-          angle:{value:0,min:-360,max:360,audioValue:0,change:()=>{}}
+          red:{value:"255",min:0,max:255,audioValue:"0",change:(item)=>{ this.change(item)}},
+          green:{value:"255",min:0,max:255,audioValue:"0",change:(item)=>{ this.change(item)}},
+          blue:{value:"255",min:0,max:255,audioValue:"0",change:(item)=>{ this.change(item)}},
+          scaleX:{value:"5",min:1,max:30,audioValue:"0",change:(item)=>{ this.change(item)}},
+          scaleY:{value:"5",min:1,max:30,audioValue:"0",change:(item)=>{ this.change(item)}},
+          angle:{value:"0",min:-360,max:360,audioValue:"0",change:(item)=>{ this.change(item)}}
         }
       },
 
@@ -135,6 +149,15 @@ export default {
       clearInterval(this.updateParticles)
       this.init()
     },
+    change(item){
+      if(item.audio == true){
+        this.emitterProps.particleCreateProps[item.prop].audioValue = item.value
+      }else {
+        this.emitterProps.particleCreateProps[item.prop].value = item.value
+      }
+      
+      console.log(item)
+    }
 
   },
 
