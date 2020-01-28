@@ -39,9 +39,9 @@ export class Particle {
     // audioVolume = audioVolume / 1000
 
     // Mandatory emitter effects
-    let windX_v = this.volumeFactor(this.emitterProps.windX, audioVolume, 'windX', 10)
+    let windX_v = this.volumeFactor(this.emitterProps.windX, audioVolume, 'windX', 2000)
     this.particle.x += Number(this.emitterProps.windX.value) + windX_v
-    let windY_v = this.volumeFactor(this.emitterProps.windY, audioVolume, 'windY', 10)
+    let windY_v = this.volumeFactor(this.emitterProps.windY, audioVolume, 'windY', 2000)
     this.particle.y += Number(this.emitterProps.windY.value) + windY_v
     
     this.particle.alpha = this.lifeCount/this.life

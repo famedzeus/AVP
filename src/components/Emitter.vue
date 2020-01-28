@@ -3,25 +3,28 @@
     <!-- <audio id="player" controls></audio> -->
     <div style="position:absolute;left:10px;top:100px">
       <!-- <joypad @update="updateParameter"></joypad> -->
-      <!-- <input type="number" v-model="emitterProps.particleCreateProps.scaleX" min="0" max="20" />
-      <input type="number" v-model="emitterProps.particleCreateProps.scaleY" min="0" max="20" />-->
+      <!-- <input type="number" v-model="emitterProps.particleCreateProps.scaleX" min="0" max="20" />-->
+      <input type="number" @change="setAudioInputVolume" min="0" max="1" step="0.01" />
 
       <!-- Emitter propreties -->
       <div v-for="(prop,key) in emitterProps" v-if="prop.min">
         <!-- <label :for="key">{{key}}</label> -->
         <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;">
-          <div style="width:45%;float:left">
+          <div style="width:40%;float:left">
             <div>{{key}} {{emitterProps[key].value}}</div>
-            <Slider
+            <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.value" @change="prop.change"></knob-control>
+            <!-- <Slider
               :prop="key"
               v-model="prop.value"
               :min="prop.min"
               :max="prop.max"
               @change="prop.change"
-            ></Slider>
+            ></Slider> -->
           </div>
-          <div style="width:45%;float:right">
-            <div>{{key}} audio {{emitterProps[key].audioValue}}</div>
+          <div style="width:40%;float:left">
+            <div>{{key}} audio {{emitterProps[key].audioValue}}</div> 
+            <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.audioValue" @change="prop.change"></knob-control>
+            <!--
             <Slider
               :prop="key"
               v-model="prop.audioValue"
@@ -29,7 +32,7 @@
               :min="prop.min"
               :max="prop.max"
               @change="prop.change"
-            ></Slider>       
+            ></Slider> -->
           </div>
           <div style="clear:both"></div>
         </div>
@@ -85,14 +88,15 @@
 <script>
 import Slider from "./Slider.vue";
 import { Particle } from "../classes/Particle.js";
-import { AudioShape } from "../classes/AudioShape.js";
+import KnobControl from 'vue-knob-control'
 
 export default {
   name: "Emitter",
   props: {
     sceneInstance: Object
   },
-  components: { Slider },
+  components: { Slider, KnobControl },
+
   data() {
     return {
       particles: [],
@@ -103,7 +107,6 @@ export default {
       oneShotAudio: true,
       graphics: null,
       game: this.$store.getters.getGame,
-      audioShape: null,
 
       emitterProps: {
         frequency: {
@@ -123,7 +126,7 @@ export default {
           }
         },
         x: {
-          value: "1",
+          value: "300",
           min: 1,
           max: 800,
           change: item => {
@@ -139,7 +142,7 @@ export default {
           }
         },
         windX: {
-          value: "5",
+          value: "0",
           min: -100,
           audioValue: "0",
           max: 100,
@@ -158,7 +161,7 @@ export default {
         },
         particleCreateProps: {
           red: {
-            value: "255",
+            value: "5",
             min: 0,
             max: 255,
             audioValue: "0",
@@ -167,7 +170,7 @@ export default {
             }
           },
           green: {
-            value: "255",
+            value: "5",
             min: 0,
             max: 255,
             audioValue: "0",
@@ -176,7 +179,7 @@ export default {
             }
           },
           blue: {
-            value: "255",
+            value: "10",
             min: 0,
             max: 255,
             audioValue: "0",
@@ -229,11 +232,11 @@ export default {
   },
   methods: {
     init() {
-      this.audioShape = new AudioShape();
+      // this.audioShape = new AudioShape();
 
       // Create particles interval
       this.updateEmitter = setInterval(() => {
-        this.audioVolume = this.audioShape.getAudioVolume();
+        this.audioVolume = this.$audioShape.getAudioVolume();
 
         this.particles.push(
           new Particle(
@@ -285,7 +288,9 @@ export default {
         this.emitterProps[item.prop].value = item.value;
       }
     },
-    
+    setAudioInputVolume(v) {
+      this.$audioShape.setAudioInputLevel(Number(v.currentTarget.value));
+    }
   }
 };
 </script>

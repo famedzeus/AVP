@@ -12,7 +12,9 @@ export class AudioShape {
     this.context = new AudioContext();
     this.source = this.context.createMediaStreamSource(stream);
     this.processor = this.context.createScriptProcessor(256, 1, 1);
-
+    this.gainNode = this.context.createGain();
+    this.gainNode.gain.value = 0.5
+    
     this.source.connect(this.processor);
     this.processor.connect(this.context.destination);
     console.log("Source/processor connect")
@@ -56,5 +58,13 @@ export class AudioShape {
   getAudioVolume(){
     return this.audioVolume
   }  
+
+  getAudioInputLevel(){
+    return this.gainNode.gain.value
+  }
+
+  setAudioInputLevel(v){
+    this.gainNode.gain.value = v
+  }
 
 }

@@ -12,7 +12,11 @@
 </template>
 
 <script>
+
+
+
 import Emitter from "./Emitter.vue";
+
 
 export default {
   name: "Scene",
@@ -25,6 +29,7 @@ export default {
   },
   mounted() {
     let vm = this;
+    
     this.game.scene.add(
       "scene,",
       {
