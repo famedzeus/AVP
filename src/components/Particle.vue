@@ -6,16 +6,16 @@
 
 <script>
 
-import { EmitterOp } from 'phaser'
+import { LayerOp } from 'phaser'
 
 export default {
-  name: "Emitter",
+  name: "Layer",
   props: {
     sceneInstance: Object
   },
   data() {
     return {
-      updateEmitter:null,
+      updateLayer:null,
       emitterOp:Object,
       emitter:Object,
       game: this.$store.getters.getGame
@@ -31,7 +31,7 @@ export default {
     bunny.tint = 0xff0000;
     bunny.scaleX = 13;
 
-    // this.emitter = particles.createEmitter(
+    // this.emitter = particles.createLayer(
     //   {
     //   //   x:400,
     //   //   y:200,
@@ -69,11 +69,11 @@ export default {
 
   },
   desroyed(){
-    clearInterval(this.updateEmitter)
+    clearInterval(this.updateLayer)
   },
   methods: {
     test(){
-      this.updateEmitter = setInterval(() => {
+      this.updateLayer = setInterval(() => {
         this.emitter.forEachAlive(function (particle) {
           let p = particle  
           particle.alpha = 0

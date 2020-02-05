@@ -1,87 +1,69 @@
 <template>
   <div>
     <!-- <audio id="player" controls></audio> -->
-    <div style="position:absolute;left:10px;top:100px">
+    <dialog-drag id="emitter" title="Layer">
+    <!-- <div style="position:absolute;left:10px;top:100px"> -->
       <!-- <joypad @update="updateParameter"></joypad> -->
       <!-- <input type="number" v-model="emitterProps.particleCreateProps.scaleX" min="0" max="20" />-->
       <input type="number" @change="setAudioInputVolume" min="0" max="1" step="0.01" />
 
-      <!-- Emitter propreties -->
+      <!-- Layer propreties -->
       <div v-for="(prop,key) in emitterProps" v-if="prop.min">
         <!-- <label :for="key">{{key}}</label> -->
         <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;">
-          <div style="width:40%;float:left">
-            <div>{{key}} {{emitterProps[key].value}}</div>
-            <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.value" @change="prop.change"></knob-control>
-            <!-- <Slider
-              :prop="key"
-              v-model="prop.value"
-              :min="prop.min"
-              :max="prop.max"
-              @change="prop.change"
-            ></Slider> -->
-          </div>
-          <div style="width:40%;float:left">
-            <div>{{key}} audio {{emitterProps[key].audioValue}}</div> 
-            <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.audioValue" @change="prop.change"></knob-control>
-            <!--
-            <Slider
-              :prop="key"
-              v-model="prop.audioValue"
-              :audio="true"
-              :min="prop.min"
-              :max="prop.max"
-              @change="prop.change"
-            ></Slider> -->
-          </div>
-          <div style="clear:both"></div>
-        </div>
-      </div>
-
-      <!-- Particle propreties -->
-      <div v-for="(prop,key) in emitterProps.particleCreateProps">
-        <!-- <label :for="key">{{key}}</label> -->
-        <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;">
           <div style="width:45%;float:left">
-            <div>{{key}} {{emitterProps.particleCreateProps[key].value}}</div>
-            <Slider
-              :prop="key"
-              v-model="emitterProps.particleCreateProps[key].value"
-              :min="emitterProps.particleCreateProps[key].min"
-              :max="emitterProps.particleCreateProps[key].max"
-              @change="emitterProps.particleCreateProps[key].change"
-            ></Slider>
+            <div>{{key}}</div>
+            <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.value" @change="prop.change"></knob-control>
           </div>
           <div style="width:45%;float:right">
-            <div>{{key}} audio {{emitterProps.particleCreateProps[key].audioValue}}</div>
-            <Slider
-              :prop="key"
-              :audio="true"
-              v-model="emitterProps.particleCreateProps[key].audioValue"
-              :min="-100"
-              :max="100"
-              @change="emitterProps.particleCreateProps[key].change"
-            ></Slider>
+            <div>{{key}}</div> 
+            <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.audioValue" @change="prop.change"></knob-control>
           </div>
           <div style="clear:both"></div>
         </div>
-
-        <!-- <input :id="key" 
-            type="number" 
-              v-model="emitterProps.particleCreateProps[key].value" 
-              @change="emitterProps.particleCreateProps[key].change"
-              :min="emitterProps.particleCreateProps[key].min" 
-              :max="emitterProps.particleCreateProps[key].max" />
-        <input :id="key" 
-            type="number" 
-            v-model="emitterProps.particleCreateProps[key].audioValue" 
-              min="-100" 
-        max="100" />-->
       </div>
-      <input type="color" name="favcolor" @change="selectColor" />
-      {{particles.length}}
-      Audio:{{audioVolume}}
-    </div>
+      <!-- {{255-(emitterProps.particleCreateProps['red'].audioValue) - audioRange.audioVolume}} -->
+      <knob-control :min="0" :max="100" :stroke-width="8" :size="80" v-model="audioRange.audioVolume"></knob-control>
+
+    </dialog-drag>
+
+
+
+    <dialog-drag id="particles" title="Particles">
+
+        <!-- Particle propreties -->
+        <div v-for="(prop,key) in emitterProps.particleCreateProps">
+          <!-- <label :for="key">{{key}}</label> -->
+          <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;opacity:1">
+            <div style="width:45%;float:left">
+              <div>{{key}}</div>
+              <knob-control :min="emitterProps.particleCreateProps[key].min" 
+                            :max="emitterProps.particleCreateProps[key].max" 
+                            :stroke-width="8" 
+                            :size="80" 
+                            v-model="emitterProps.particleCreateProps[key].value" 
+                            @change="emitterProps.particleCreateProps[key].change"></knob-control>
+            </div>
+            <div style="width:45%;float:right">
+              <div>{{key}}</div>
+              <knob-control :min="emitterProps.particleCreateProps[key].audioRange[0]" 
+                            :max="emitterProps.particleCreateProps[key].audioRange[1]" 
+                            :stroke-width="8" 
+                            :size="80" 
+                            v-model="emitterProps.particleCreateProps[key].audioValue" 
+                            @change="emitterProps.particleCreateProps[key].change"></knob-control>
+            </div>
+            <div style="clear:both"></div>
+          </div>
+
+        </div>
+        <input type="color" name="favcolor" @change="selectColor" />
+        {{particles.length}}
+        <!-- Audio volume:{{audioVolume}} -->
+        <!-- Detect:{{audioRange}} -->
+
+    </dialog-drag>
+
   </div>
 </template>
 
@@ -89,28 +71,31 @@
 import Slider from "./Slider.vue";
 import { Particle } from "../classes/Particle.js";
 import KnobControl from 'vue-knob-control'
+import DialogDrag from 'vue-dialog-drag'
 
 export default {
-  name: "Emitter",
+  name: "Layer",
   props: {
     sceneInstance: Object
   },
-  components: { Slider, KnobControl },
+  components: { Slider, KnobControl, DialogDrag},
 
   data() {
     return {
       particles: [],
-      updateEmitter: null,
+      updateLayer: null,
       updateParticles: null,
       emitter: Object,
       audioVolume: 0,
+      audioRange: 0,
       oneShotAudio: true,
       graphics: null,
       game: this.$store.getters.getGame,
 
       emitterProps: {
         frequency: {
-          value: "100",
+          value: 100,
+          audioValue: 0,
           min: 1,
           max: 500,
           change: () => {
@@ -118,7 +103,8 @@ export default {
           }
         },
         life: {
-          value: "100",
+          value: 100,
+          audioValue: 0,
           min: 1,
           max: 500,
           change: item => {
@@ -126,7 +112,8 @@ export default {
           }
         },
         x: {
-          value: "300",
+          value: 300,
+          audioValue: 0,
           min: 1,
           max: 800,
           change: item => {
@@ -134,7 +121,8 @@ export default {
           }
         },
         y: {
-          value: "300",
+          value: 300,
+          audioValue: 0,
           min: 1,
           max: 600,
           change: item => {
@@ -142,18 +130,18 @@ export default {
           }
         },
         windX: {
-          value: "0",
+          value: 0,
           min: -100,
-          audioValue: "0",
+          audioValue: 0,
           max: 100,
           change: item => {
             this.emitterPropChange(item);
           }
         },
         windY: {
-          value: "0",
+          value: 0,
           min: -100,
-          audioValue: "0",
+          audioValue: 0,
           max: 100,
           change: item => {
             this.emitterPropChange(item);
@@ -161,55 +149,61 @@ export default {
         },
         particleCreateProps: {
           red: {
-            value: "5",
+            value: 0,
             min: 0,
             max: 255,
-            audioValue: "0",
+            audioValue: 0,
+            audioRange:[0,100],            
             change: item => {
               this.particlePropChange(item);
             }
           },
           green: {
-            value: "5",
+            value: 0,
             min: 0,
             max: 255,
-            audioValue: "0",
+            audioValue: 0,
+            audioRange:[0,100],
             change: item => {
               this.particlePropChange(item);
             }
           },
           blue: {
-            value: "10",
+            value: 0,
             min: 0,
             max: 255,
-            audioValue: "0",
+            audioValue: 0,
+            audioRange:[0,100],            
             change: item => {
               this.particlePropChange(item);
             }
           },
           scaleX: {
-            value: "5",
+            value: 5,
             min: 1,
             max: 30,
-            audioValue: "0",
+            audioValue: 0,
+            audioRange:[-100,100],
             change: item => {
               this.particlePropChange(item);
             }
           },
           scaleY: {
-            value: "5",
+            value: 5,
             min: 1,
             max: 30,
-            audioValue: "0",
+            audioValue: 0,
+            audioRange:[-100,100],
             change: item => {
               this.particlePropChange(item);
             }
           },
           angle: {
-            value: "0",
+            value: 0,
             min: -360,
             max: 360,
-            audioValue: "0",
+            audioValue: 0,
+            audioRange:[-100,100],
             change: item => {
               this.particlePropChange(item);
             }
@@ -228,22 +222,30 @@ export default {
     this.init();
   },
   destroyed() {
-    clearInterval(this.updateEmitter);
+    clearInterval(this.updateLayer);
   },
   methods: {
     init() {
       // this.audioShape = new AudioShape();
 
       // Create particles interval
-      this.updateEmitter = setInterval(() => {
+      this.updateLayer = setInterval(() => {
         this.audioVolume = this.$audioShape.getAudioVolume();
+
+
+        this.audioRange = this.$audioShape.getRangeDetection();
+        // Colours require range on their audio sensitivity range
+        // this.emitterProps.particleCreateProps['red'].audioRange[1] = Math.floor(this.audioRange.range)
+        // this.emitterProps.particleCreateProps['green'].audioRange[1] = Math.floor(this.audioRange.range)
+        // this.emitterProps.particleCreateProps['blue'].audioRange[1] = Math.floor(this.audioRange.range)
 
         this.particles.push(
           new Particle(
             "star",
             this.sceneInstance,
             this.emitterProps,
-            this.audioVolume
+            this.audioVolume,
+            this.audioRange
           )
         );
 
@@ -267,7 +269,7 @@ export default {
       // this.emitterProps.particleCreateProps.tint = parseInt(col.currentTarget.value.replace("#","0x"))
     },
     changeFrequency() {
-      clearInterval(this.updateEmitter);
+      clearInterval(this.updateLayer);
       clearInterval(this.updateParticles);
       this.init();
     },

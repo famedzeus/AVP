@@ -1,12 +1,12 @@
 <template>
   <div>
     <div v-if="sceneInstance">
-        <Emitter :scene-instance="sceneInstance"></Emitter>
-        <!-- <Emitter :scene-instance="sceneInstance"></Emitter>
-        <Emitter :scene-instance="sceneInstance"></Emitter>
-        <Emitter :scene-instance="sceneInstance"></Emitter>
-        <Emitter :scene-instance="sceneInstance"></Emitter>
-        <Emitter :scene-instance="sceneInstance"></Emitter> -->
+        <Layer :scene-instance="sceneInstance"></Layer>
+        <!-- <Layer :scene-instance="sceneInstance"></Layer>
+        <Layer :scene-instance="sceneInstance"></Layer>
+        <Layer :scene-instance="sceneInstance"></Layer>
+        <Layer :scene-instance="sceneInstance"></Layer>
+        <Layer :scene-instance="sceneInstance"></Layer> -->
     </div>
   </div>
 </template>
@@ -15,12 +15,12 @@
 
 
 
-import Emitter from "./Emitter.vue";
+import Layer from "./Layer.vue";
 
 
 export default {
   name: "Scene",
-  components: { Emitter },
+  components: { Layer },
   data() {
     return {
       game: this.$store.getters.getGame,

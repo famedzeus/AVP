@@ -1,31 +1,44 @@
 export class Particle {
 
-  constructor(objectKey, sceneInstance, emitterProps, audioVolume){
-    this.particle = sceneInstance.add.image(Number(emitterProps.x.value), Number(emitterProps.y.value), objectKey);
+  constructor(objectKey, sceneInstance, layerProps, audioVolume, audioRange){
+    this.particle = sceneInstance.add.image(Number(layerProps.x.value), Number(layerProps.y.value), objectKey);
     this.objectKey = objectKey
-    this.emitterProps = emitterProps
+    this.layerProps = layerProps
     this.audioVolume = audioVolume
+    this.audioRange = audioRange
 
-    this.life = emitterProps.life.value
+    this.life = layerProps.life.value
     this.lifeCount = this.life
 
     // straight prop to particle mappings
-    Object.keys(emitterProps.particleCreateProps).forEach((key,index) => {
-      this.particle[key] = emitterProps.particleCreateProps[key].value
+    Object.keys(layerProps.particleCreateProps).forEach((key,index) => {
+      this.particle[key] = layerProps.particleCreateProps[key].value
 
       // Exceptions
 
       // Apply audio to color
-      // let rotation_v = audioVolume * Number(this.emitterProps.particleCreateProps.rotation.audioValue) || 1
+      // let rotation_v = audioVolume * Number(this.layerProps.particleCreateProps.rotation.audioValue) || 1
 
-      let red_v = this.volumeFactor(this.emitterProps.particleCreateProps['red'], audioVolume, 'red', 10, 255)
-      let green_v = this.volumeFactor(this.emitterProps.particleCreateProps['green'], audioVolume, 'green', 10, 255)
-      let blue_v = this.volumeFactor(this.emitterProps.particleCreateProps['blue'], audioVolume, 'blue', 10, 255)
-
+      // let range = this.audioShape.getRangeDetection()
+      
+      let red_v =  0
+      let green_v =  0
+      let blue_v =  0
+      
+      if(this.layerProps.particleCreateProps['red'].audioValue > 0){
+        red_v =  255 - Math.abs((this.layerProps.particleCreateProps['red'].audioValue - audioRange.audioVolume)*3)
+      }
+      if(this.layerProps.particleCreateProps['green'].audioValue > 0){
+        green_v =  255 - Math.abs((this.layerProps.particleCreateProps['green'].audioValue - audioRange.audioVolume)*3)
+      }
+      if(this.layerProps.particleCreateProps['blue'].audioValue > 0){
+        blue_v =  255 - Math.abs((this.layerProps.particleCreateProps['blue'].audioValue - audioRange.audioVolume)*3)
+      }
+      
       // Color (tint)
-      let red = this.decToHex(Number(this.emitterProps.particleCreateProps['red'].value) + Math.floor(red_v))
-      let green = this.decToHex(Number(this.emitterProps.particleCreateProps['green'].value) + Math.floor(green_v))
-      let blue = this.decToHex(Number(this.emitterProps.particleCreateProps['blue'].value) + Math.floor(blue_v))
+      let red = this.decToHex(Number(this.layerProps.particleCreateProps['red'].value + red_v))
+      let green = this.decToHex(Number(this.layerProps.particleCreateProps['green'].value + green_v))
+      let blue = this.decToHex(Number(this.layerProps.particleCreateProps['blue'].value + blue_v))
 
       let h = `0x${red}${green}${blue}`
       this.particle['tint'] = parseInt(h,16)
@@ -39,26 +52,31 @@ export class Particle {
     // audioVolume = audioVolume / 1000
 
     // Mandatory emitter effects
-    let windX_v = this.volumeFactor(this.emitterProps.windX, audioVolume, 'windX', 2000)
-    this.particle.x += Number(this.emitterProps.windX.value) + windX_v
-    let windY_v = this.volumeFactor(this.emitterProps.windY, audioVolume, 'windY', 2000)
-    this.particle.y += Number(this.emitterProps.windY.value) + windY_v
+    // let windX_v = this.volumeFactor(this.layerProps.windX, audioVolume, 'windX', 2000)
+    // this.particle.x += Number(this.layerProps.windX.value) + windX_v
+    // let windY_v = this.volumeFactor(this.layerProps.windY, audioVolume, 'windY', 2000)
+    // this.particle.y += Number(this.layerProps.windY.value) + windY_v
     
+    this.particle.x += Number(this.layerProps.windX.value / 10)
+    this.particle.y += Number(this.layerProps.windY.value / 10)
+    
+
     this.particle.alpha = this.lifeCount/this.life
 
-    // Particle effects
+    // // Particle effects
     
-    // Rotation
-    let angle_v = this.volumeFactor(this.emitterProps.particleCreateProps.angle, audioVolume, 'angle', 10)
-    this.particle.angle += Number(this.emitterProps.particleCreateProps.angle.value) * angle_v
+    // // Rotation
+    // let angle_v = this.volumeFactor(this.layerProps.particleCreateProps.angle, audioVolume, 'angle', 10)
+    // this.particle.angle += Number(this.layerProps.particleCreateProps.angle.value) * angle_v
+    this.particle.angle += Number(this.layerProps.particleCreateProps.angle.value / 100)
 
-    // Scale
-    let scaleX_v = this.volumeFactor(this.emitterProps.particleCreateProps.scaleX, audioVolume, 'scaleX', 10)
-    this.particle.scaleX = Number(this.emitterProps.particleCreateProps.scaleX.value) + scaleX_v
-    let scaleY_v = this.volumeFactor(this.emitterProps.particleCreateProps.scaleY, audioVolume, 'scaleY', 10)
-    this.particle.scaleY = Number(this.emitterProps.particleCreateProps.scaleY.value) + scaleY_v
+    // // Scale
+    let scaleX_v = this.volumeFactor(this.layerProps.particleCreateProps.scaleX, audioVolume, 'scaleX', 100000)
+    this.particle.scaleX = Number(this.layerProps.particleCreateProps.scaleX.value) + scaleX_v
+    let scaleY_v = this.volumeFactor(this.layerProps.particleCreateProps.scaleY, audioVolume, 'scaleY', 100000)
+    this.particle.scaleY = Number(this.layerProps.particleCreateProps.scaleY.value) + scaleY_v
 
-    // Mandatory life effect
+    // // Mandatory life effect
     if(this.lifeCount <= 0 && !this.dead){
       this.dead = true
       this.particle.destroy()
@@ -74,13 +92,13 @@ export class Particle {
       // if(clip){
       //   factor = factor > clip ? clip : factor
       // }
-    return factor / tenuation
+    return Math.round(factor / tenuation)
   }
 
   decToHex(v){
     v = v > 255 ? 255 : v
     let hex = v.toString(16)
-    if(v < 10){
+    if(v < 16){
       hex = "0"+hex
     }
     return hex

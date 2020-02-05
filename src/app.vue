@@ -39,6 +39,8 @@ export default {
   },
   mounted() {
     let vm = this
+    this.gameConfig.width =  window.innerWidth
+    this.gameConfig.height = window.innerHeight
     this.$store.dispatch("setGameConfig", this.gameConfig)
     this.game = new Phaser.Game(this.gameConfig)
     this.$store.dispatch("setGame", this.game)
