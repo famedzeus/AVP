@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="game" v-if="downloaded == true">
-      <Scene></Scene>
+    <div id="game" v-if="downloaded == true" @mousemove="setPosition" @mousedown="dragPosition" @mouseup="stopDragPosition">
+      <Scene ref="game" id="game"></Scene>
     </div>
     <div class="placeholder" v-else>Downloading ...</div>
   </div>
@@ -10,14 +10,15 @@
 <script>
 // import Game from './components/Game.vue'
 import Phaser from "phaser";
-import Scene from './components/Scene.vue'
+import Scene from "./components/Scene.vue";
 
 export default {
   name: "App",
-  components:{Scene},
+  components: { Scene },
   data() {
     return {
       game: null,
+      draggingPosition:false,
       gameConfig: {
         type: Phaser.AUTO,
         width: 800,
@@ -36,14 +37,25 @@ export default {
     };
   },
   methods: {
+    setPosition(event) {
+      if(this.draggingPosition == true){
+        this.$refs["game"].setPosition(event);
+      }
+    },
+    dragPosition(){
+      this.draggingPosition = true
+    },
+    stopDragPosition(){
+      this.draggingPosition = false
+    }
   },
   mounted() {
-    let vm = this
-    this.gameConfig.width =  window.innerWidth
-    this.gameConfig.height = window.innerHeight
-    this.$store.dispatch("setGameConfig", this.gameConfig)
-    this.game = new Phaser.Game(this.gameConfig)
-    this.$store.dispatch("setGame", this.game)
+    let vm = this;
+    this.gameConfig.width = window.innerWidth;
+    this.gameConfig.height = window.innerHeight;
+    this.$store.dispatch("setGameConfig", this.gameConfig);
+    this.game = new Phaser.Game(this.gameConfig);
+    this.$store.dispatch("setGame", this.game);
   },
   watch: {
     game(g) {
@@ -57,11 +69,11 @@ export default {
 
 
 <style>
-  body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-  }
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
 </style>
