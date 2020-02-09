@@ -2,16 +2,12 @@
 
   <div v-show="selectedLayer == id && on == true">
     <!-- <audio id="player" controls></audio> -->
-    <div @mousedown="preventPosition = true" @mouseup="preventPosition = false">
-      <dialog-drag id="emitter" title="Layer" :options="{buttonClose:false,top:'100'}">
-      <!-- <div style="position:absolute;left:10px;top:100px"> -->
-        <!-- <joypad @update="updateParameter"></joypad> -->
-        <!-- <input type="number" v-model="layerProps.particleCreateProps.scaleX" min="0" max="20" />-->
-        <input type="number" @change="setAudioInputVolume" min="0" max="1" step="0.01" />
+    <div @mouseenter="preventPosition = true" @mouseleave="preventPosition = false">
+
+      <dialog-drag v-for="group in layerGroups" :id="group.name" :title="group.name" :options="{buttonClose:false}" @drag-end="dragLayerDialog">
 
         <!-- Layer propreties -->
-        <div v-for="(prop,key) in layerProps" v-if="prop.min">
-          <!-- <label :for="key">{{key}}</label> -->
+        <div v-for="(prop,key) in layerProps" v-if="prop.group == group.name">
           <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;">
             <div style="width:45%;float:left">
               <div>{{key}}</div>
@@ -24,19 +20,38 @@
             <div style="clear:both"></div>
           </div>
         </div>
-        <!-- {{255-(layerProps.particleCreateProps['red'].audioValue) - audioRange.audioVolume}} -->
-        <knob-control v-if="audioRange" :min="0" :max="100" :stroke-width="8" :size="80" v-model="audioRange.audioVolume"></knob-control>
+
+        <!-- <knob-control v-if="audioRange" :min="0" :max="100" :stroke-width="8" :size="80" v-model="audioRange.audioVolume"></knob-control> -->
 
       </dialog-drag>
 
 
 
-      <dialog-drag id="particles" title="Particles" :options="{buttonClose:false,left:getWidth()-250}">
+      <!-- <dialog-drag id="emitter" title="Layer" :options="{buttonClose:false,top:'100'}">
+
+        <div v-for="(prop,key) in layerProps" v-if="prop.min">
+          <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;">
+            <div style="width:45%;float:left">
+              <div>{{key}}</div>
+              <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.value" @change="prop.change"></knob-control>
+            </div>
+            <div style="width:45%;float:right">
+              <div><span class="fas fa-check"></span>&nbsp;{{key}}</div> 
+              <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.audioValue" @change="prop.change"></knob-control>
+            </div>
+            <div style="clear:both"></div>
+          </div>
+        </div>
+
+        <knob-control v-if="audioRange" :min="0" :max="100" :stroke-width="8" :size="80" v-model="audioRange.audioVolume"></knob-control>
+
+      </dialog-drag>
+ -->
+
+      <dialog-drag v-for="group in particleGroups" :id="group.name" :title="group.name" :options="{buttonClose:false}">
 
           <!-- Particle propreties -->
-          <div v-for="(prop,key) in layerProps.particleCreateProps">
-            <!-- <label :for="key">{{key}}</label> -->
-
+          <div v-for="(prop,key) in layerProps.particleCreateProps" v-if="layerProps.particleCreateProps[key].group == group.name">
 
             <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;opacity:1">
               <div style="width:45%;float:left">
@@ -64,10 +79,8 @@
           </div>
           <input type="color" name="favcolor" @change="selectColor" />
           {{particles.length}}
-          <!-- Audio volume:{{audioVolume}} -->
-          <!-- Detect:{{audioRange}} -->
-
       </dialog-drag>
+
 
     </div>
 
@@ -104,8 +117,11 @@ export default {
       canvas:null,
       game: this.$store.getters.getGame,
 
+      particleGroups : [{name:"Colours",on:true},{name:"Scale",on:true}],
+      layerGroups : [{name:"Life",on:true},{name:"Pen",on:true}],
       layerProps: {
         frequency: {
+          group:"Life",
           value: 100,
           audioValue: 0,
           min: 1,
@@ -114,7 +130,8 @@ export default {
             this.changeFrequency();
           }
         },
-        life: {
+        lifespan: {
+          group:"Life",
           value: 100,
           audioValue: 0,
           min: 1,
@@ -124,6 +141,7 @@ export default {
           }
         },
         x: {
+          group:"Pen",
           value: 300,
           audioValue: 0,
           min: 1,
@@ -133,6 +151,7 @@ export default {
           }
         },
         y: {
+          group:"Pen",
           value: 300,
           audioValue: 0,
           min: 1,
@@ -142,6 +161,7 @@ export default {
           }
         },
         windX: {
+          group:"Pen",
           value: 0,
           min: -100,
           audioValue: 0,
@@ -151,6 +171,7 @@ export default {
           }
         },
         windY: {
+          group:"Pen",
           value: 0,
           min: -100,
           audioValue: 0,
@@ -159,8 +180,18 @@ export default {
             this.emitterPropChange(item);
           }
         },
+        explode:{
+          group: "Pen",
+          min: 0,
+          max: 100,
+          audioValue: 0,
+          change: item => {
+            this.emitterPropChange(item);
+          }
+        },
         particleCreateProps: {
           red: {
+            group:"Colours",
             value: 0,
             min: 0,
             max: 255,
@@ -171,6 +202,7 @@ export default {
             }
           },
           green: {
+            group:"Colours",
             value: 0,
             min: 0,
             max: 255,
@@ -181,6 +213,7 @@ export default {
             }
           },
           blue: {
+            group:"Colours",
             value: 0,
             min: 0,
             max: 255,
@@ -191,6 +224,7 @@ export default {
             }
           },
           scaleX: {
+            group: "Scale",
             value: 5,
             min: 1,
             max: 30,
@@ -201,6 +235,7 @@ export default {
             }
           },
           scaleY: {
+            group: "Scale",
             value: 5,
             min: 1,
             max: 30,
@@ -244,6 +279,11 @@ export default {
   destroyed() {
     clearInterval(this.updateLayer);
   },
+  watch:{
+    ["layerProps.frequency.value"](){
+      this.changeFrequency()  
+    }
+  },
   methods: {
     init() {
 
@@ -262,10 +302,6 @@ export default {
           this.audioVolume = this.$audioShape.getAudioVolume();
 
           this.audioRange = this.$audioShape.getRangeDetection();
-          // Colours require range on their audio sensitivity range
-          // this.layerProps.particleCreateProps['red'].audioRange[1] = Math.floor(this.audioRange.range)
-          // this.layerProps.particleCreateProps['green'].audioRange[1] = Math.floor(this.audioRange.range)
-          // this.layerProps.particleCreateProps['blue'].audioRange[1] = Math.floor(this.audioRange.range)
 
           this.particles.push(
             new Particle(
@@ -338,6 +374,9 @@ export default {
     override(event){
       console.log("!")
       // event.preventBubble()
+    },
+    dragLayerDialog(e){
+      console.log(e)
     }
   }
 };

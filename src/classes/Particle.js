@@ -7,7 +7,7 @@ export class Particle {
     this.audioVolume = audioVolume
     this.audioRange = audioRange
 
-    this.life = layerProps.life.value
+    this.life = layerProps.lifespan.value
     this.lifeCount = this.life
 
     // straight prop to particle mappings
@@ -42,6 +42,16 @@ export class Particle {
 
       let h = `0x${red}${green}${blue}`
       this.particle['tint'] = parseInt(h,16)
+
+      // Explode
+      this.explodeX = 0
+      this.explodeY = 0
+      if(this.layerProps.explode.value > 0){
+        let ex = this.layerProps.explode.value
+        this.explodeX = -ex + Math.floor(Math.random()*(ex*2))
+        this.explodeY = -ex + Math.floor(Math.random()*(ex*2))
+      }
+
     })
 
     this.dead = false
@@ -60,6 +70,8 @@ export class Particle {
     this.particle.x += Number(this.layerProps.windX.value / 10)
     this.particle.y += Number(this.layerProps.windY.value / 10)
     
+    this.particle.x += Number(this.explodeX / 10)
+    this.particle.y += Number(this.explodeY / 10)
 
     this.particle.alpha = this.lifeCount/this.life
 
