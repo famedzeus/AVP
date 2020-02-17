@@ -78,9 +78,9 @@ export class Particle {
     // // Particle effects
     
     // // Rotation
-    // let angle_v = this.volumeFactor(this.layerProps.particleCreateProps.angle, audioVolume, 'angle', 10)
+    let angle_v = this.volumeFactor(this.layerProps.particleCreateProps.angle, this.audioRange.audioVolume, 'angle', 10)
     // this.particle.angle += Number(this.layerProps.particleCreateProps.angle.value) * angle_v
-    this.particle.angle += Number(this.layerProps.particleCreateProps.angle.value / 100)
+    this.particle.angle += Number(this.layerProps.particleCreateProps.angle.value / 100) + angle_v
 
     // // Scale
     let scaleX_v = this.volumeFactor(this.layerProps.particleCreateProps.scaleX, audioVolume, 'scaleX', 100000)

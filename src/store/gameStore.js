@@ -1,10 +1,13 @@
 import gameScene from '../scenes/scene'
+import axios from "axios";
 
 export default {
     state: {
         game:null,
         gameConfig: {
-        }
+        },
+        visual:[],
+        layerProps:[]
     },
     getters: {
         getGame: state => {
@@ -12,6 +15,12 @@ export default {
         },
         getGameConfig: state => {
             return state.gameConfig
+        },
+        getLayerProps: (state,selectedLayer) => {
+            return state.layerProps[selectedLayer-1]
+        },
+        getVisual: state => {
+          return state.visual
         }
     },
     mutations: {
@@ -28,6 +37,9 @@ export default {
         },
         setGameConfig(context, config) {
             context.commit('setGameConfig', config)
+        },
+        fetchVisual(context, name){
+          return axios.get('assets/presets/default.json')
         }
     }
 

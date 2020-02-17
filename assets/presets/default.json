@@ -1,0 +1,602 @@
+[
+    {
+        "frequency": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "lifespan": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "x": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":800
+        },
+        "y": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":600
+        },
+        "windX": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "windY": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "explode":{
+          "group": "Pen",
+          "min":0,
+          "max":100,
+          "audioValue":0
+        },
+        "particleCreateProps": {
+          "red": {
+            "group":"Colours",
+            "value":255,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "green": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "blue": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "scaleX": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "scaleY": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "angle": {
+            "group": "Effects",
+            "value":0,
+            "min":-360,
+            "max":360,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          }
+        }
+      },
+      {
+        "frequency": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "lifespan": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "x": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":800
+        },
+        "y": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":600
+        },
+        "windX": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "windY": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "explode":{
+          "group": "Pen",
+          "min":0,
+          "max":100,
+          "audioValue":0
+        },
+        "particleCreateProps": {
+          "red": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "green": {
+            "group":"Colours",
+            "value":255,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "blue": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "scaleX": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "scaleY": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "angle": {
+            "group": "Effects",
+            "value":0,
+            "min":-360,
+            "max":360,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          }
+        }
+      },
+      {
+        "frequency": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "lifespan": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "x": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":800
+        },
+        "y": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":600
+        },
+        "windX": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "windY": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "explode":{
+          "group": "Pen",
+          "min":0,
+          "max":100,
+          "audioValue":0
+        },
+        "particleCreateProps": {
+          "red": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "green": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "blue": {
+            "group":"Colours",
+            "value":255,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "scaleX": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "scaleY": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "angle": {
+            "group": "Effects",
+            "value":0,
+            "min":-360,
+            "max":360,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          }
+        }
+      },
+      {
+        "frequency": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "lifespan": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "x": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":800
+        },
+        "y": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":600
+        },
+        "windX": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "windY": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "explode":{
+          "group": "Pen",
+          "min":0,
+          "max":100,
+          "audioValue":0
+        },
+        "particleCreateProps": {
+          "red": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "green": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "blue": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "scaleX": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "scaleY": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "angle": {
+            "group": "Effects",
+            "value":0,
+            "min":-360,
+            "max":360,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          }
+        }
+      },
+      {
+        "frequency": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "lifespan": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "x": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":800
+        },
+        "y": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":600
+        },
+        "windX": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "windY": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "explode":{
+          "group": "Pen",
+          "min":0,
+          "max":100,
+          "audioValue":0
+        },
+        "particleCreateProps": {
+          "red": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "green": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "blue": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "scaleX": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "scaleY": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "angle": {
+            "group": "Effects",
+            "value":0,
+            "min":-360,
+            "max":360,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          }
+        }
+      },
+      {
+        "frequency": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "lifespan": {
+          "group":"Life",
+          "value":100,
+          "audioValue":0,
+          "min":1,
+          "max":500
+        },
+        "x": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":800
+        },
+        "y": {
+          "group":"Pen",
+          "value":300,
+          "audioValue":0,
+          "min":1,
+          "max":600
+        },
+        "windX": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "windY": {
+          "group":"Pen",
+          "value":0,
+          "min":-100,
+          "audioValue":0,
+          "max":100
+        },
+        "explode":{
+          "group": "Pen",
+          "min":0,
+          "max":100,
+          "audioValue":0
+        },
+        "particleCreateProps": {
+          "red": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "green": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "blue": {
+            "group":"Colours",
+            "value":0,
+            "min":0,
+            "max":255,
+            "audioValue":0,
+            "audioRange":[0,100]
+          },
+          "scaleX": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "scaleY": {
+            "group": "Scale",
+            "value":5,
+            "min":1,
+            "max":30,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          },
+          "angle": {
+            "group": "Effects",
+            "value":0,
+            "min":-360,
+            "max":360,
+            "audioValue":0,
+            "audioRange":[-100,100]
+          }
+        }
+      }                              
+]
