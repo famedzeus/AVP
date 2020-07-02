@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="game" v-if="downloaded == true" @mousemove="setPosition" @mousedown="dragPosition" @mouseup="stopDragPosition">
+    <div id="game" v-if="downloaded == true" @mousemove="setPosition" @mousedown="startDragPosition" @mouseup="stopDragPosition">
       <Scene ref="game" id="game"></Scene>
     </div>
     <div class="placeholder" v-else>Downloading ...</div>
@@ -20,6 +20,7 @@ export default {
       game: null,
       draggingPosition:false,
       gameConfig: {
+        disableContextMenu:true,
         type: Phaser.AUTO,
         width: 800,
         height: 600,
@@ -42,8 +43,12 @@ export default {
         this.$refs["game"].setPosition(event);
       }
     },
-    dragPosition(){
-      this.draggingPosition = true
+    startDragPosition($event){
+      console.log($event.cancelable)
+      $event.stopPropagation()
+      if($event.button == 2){
+        this.draggingPosition = true
+      }
     },
     stopDragPosition(){
       this.draggingPosition = false
@@ -62,7 +67,13 @@ export default {
       if (g) {
         this.downloaded = true;
       }
-    }
+    },
+    ['window.innerWidth'](){
+      this.gameConfig.width = window.innerWidth;
+    },
+    ['window.innerHeight'](){
+      this.gameConfig.height = window.innerHeight;
+    }    
   }
 };
 </script>

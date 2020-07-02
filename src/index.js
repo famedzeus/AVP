@@ -10,9 +10,11 @@ import axios from "axios";
  
 // Vue.use(KnobControl)
 Vue.use(Vuex)
+// Vue.use(Vuetify)
 
 Vue.prototype.$audioShape = new AudioShape();
 Vue.prototype.$http = axios;
+Vue.prototype.$stealth = true;
 
 const store = new Vuex.Store(gameStore)
 

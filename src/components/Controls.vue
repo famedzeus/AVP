@@ -146,13 +146,15 @@ export default {
       console.log("!")
       // event.preventBubble()
     },
-    startDragDialog(){
-      this.preventPosition = true
-    },
-    endDragDialog(e){
-      this.preventPosition = false
-      console.log(e)
-    }
+    // startDragDialog(){
+    //   this.preventPosition = true
+    //   this.$emit('preventPosition',true)
+    // },
+    // endDragDialog(){
+    //   this.preventPosition = false
+    //   this.$emit('preventPosition',false)
+    //   console.log(e)
+    // }
   }
 };
 </script>
