@@ -52,14 +52,22 @@ export default {
     },
     stopDragPosition(){
       this.draggingPosition = false
+    },
+    windowResize(w){
+      this.game.scale.setGameSize(window.innerWidth-4,window.innerHeight-4)
     }
+  },
+  created(){
+    window.addEventListener("resize", this.windowResize)
   },
   mounted() {
     let vm = this;
-    this.gameConfig.width = window.innerWidth;
-    this.gameConfig.height = window.innerHeight;
+    this.gameConfig.width = window.innerWidth-4;
+    this.gameConfig.height = window.innerHeight-4;
     this.$store.dispatch("setGameConfig", this.gameConfig);
     this.game = new Phaser.Game(this.gameConfig);
+    // this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+    this.game.scale.parentIsWindow = true;    
     this.$store.dispatch("setGame", this.game);
   },
   watch: {
@@ -67,13 +75,7 @@ export default {
       if (g) {
         this.downloaded = true;
       }
-    },
-    ['window.innerWidth'](){
-      this.gameConfig.width = window.innerWidth;
-    },
-    ['window.innerHeight'](){
-      this.gameConfig.height = window.innerHeight;
-    }    
+    }
   }
 };
 </script>
@@ -86,5 +88,9 @@ body {
   justify-content: center;
   align-items: center;
   margin: 0;
+}
+canvas {
+  padding:0;
+  margin:0;
 }
 </style>

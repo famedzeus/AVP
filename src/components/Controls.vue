@@ -11,11 +11,11 @@
           <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;">
             <div style="width:45%;float:left">
               <div>{{key}}</div>
-              <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.value" ></knob-control>
+              <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="60" v-model="prop.value" ></knob-control>
             </div>
             <div style="width:45%;float:right">
-              <div><span class="fas fa-check"></span>&nbsp;{{key}}</div> 
-              <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="80" v-model="prop.audioValue" ></knob-control>
+              <div>&nbsp;{{key}}</div> 
+              <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="60" v-model="prop.audioValue" ></knob-control>
             </div>
             <div style="clear:both"></div>
           </div>
@@ -36,7 +36,7 @@
                 <knob-control :min="layerProps.particleCreateProps[key].min" 
                               :max="layerProps.particleCreateProps[key].max" 
                               :stroke-width="8" 
-                              :size="80" 
+                              :size="60" 
                               v-model="layerProps.particleCreateProps[key].value" 
                               ></knob-control>
               </div>
@@ -45,7 +45,7 @@
                 <knob-control :min="layerProps.particleCreateProps[key].audioRange[0]" 
                               :max="layerProps.particleCreateProps[key].audioRange[1]" 
                               :stroke-width="8" 
-                              :size="80" 
+                              :size="60" 
                               v-model="layerProps.particleCreateProps[key].audioValue" 
                               ></knob-control>
               </div>
