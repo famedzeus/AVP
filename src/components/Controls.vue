@@ -4,16 +4,22 @@
     <!-- <audio id="player" controls></audio> -->
     <div id="controls">  <!--  @mouseenter="preventPosition = true" @mouseleave="preventPosition = false" -->
 
-      <dialog-drag v-for="group in layerGroups" :id="group.name" :title="group.name" :options="{buttonClose:false}">
-
+      <dialog-drag v-for="(group,index) in layerGroups" :key="'layer-'+index" 
+            :x="group.dialogX"
+            :y="group.dialogY"
+            :index="'layer-'+index" 
+            :id="group.name" 
+            :title="group.name" 
+            :options="getLayerDialogOptions(group)"
+            @drag-end="updateLayerGroups">
         <!-- Layer propreties -->
         <div v-for="(prop,key) in layerProps" v-if="prop.group == group.name">
           <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;">
-            <div style="width:45%;float:left">
+            <div style="width:45%;float:left" @mouseup="updateDefaultPreset">
               <div>{{key}}</div>
               <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="60" v-model="prop.value" ></knob-control>
             </div>
-            <div style="width:45%;float:right">
+            <div style="width:45%;float:right" @mouseup="updateDefaultPreset">
               <div>&nbsp;{{key}}</div> 
               <knob-control :min="prop.min" :max="prop.max" :stroke-width="8" :size="60" v-model="prop.audioValue" ></knob-control>
             </div>
@@ -25,13 +31,19 @@
 
       </dialog-drag>
 
-      <dialog-drag v-for="group in particleGroups" :id="group.name" :title="group.name" :options="{buttonClose:false}">
+      <dialog-drag v-for="(group,index) in particleGroups" 
+            :key="'particle-'+index" 
+            :index="'particle-'+index" 
+            :id="group.name" 
+            :title="group.name" 
+            :options="getParticleDialogOptions(group)"
+            @drag-end="updateParticleGroups">
 
           <!-- Particle propreties -->
           <div v-for="(prop,key) in layerProps.particleCreateProps" v-if="layerProps.particleCreateProps[key].group == group.name">
 
             <div style="box-shadow:1px 1px 5px #b5b1e4;padding:3px;margin:5px;opacity:1">
-              <div style="width:45%;float:left">
+              <div style="width:45%;float:left" @mouseup="updateDefaultPreset">
                 <div>{{key}}</div>
                 <knob-control :min="layerProps.particleCreateProps[key].min" 
                               :max="layerProps.particleCreateProps[key].max" 
@@ -40,7 +52,7 @@
                               v-model="layerProps.particleCreateProps[key].value" 
                               ></knob-control>
               </div>
-              <div style="width:45%;float:right">
+              <div style="width:45%;float:right" @mouseup="updateDefaultPreset">
                 <div>{{key}}</div>
                 <knob-control :min="layerProps.particleCreateProps[key].audioRange[0]" 
                               :max="layerProps.particleCreateProps[key].audioRange[1]" 
@@ -54,7 +66,7 @@
 
 
           </div>
-          <input type="color" name="favcolor" @change="selectColor" />
+          <!-- <input type="color" name="favcolor" @change="selectColor" /> -->
           <!-- {{particles.length}} -->
       </dialog-drag>
 
@@ -81,28 +93,56 @@ export default {
 
   data() {
     return {
+      // layerProps:this.props,
       preventPosition:false,
-      particleGroups : [{name:"Colours",on:true},{name:"Scale",on:true},{name:"Effects",on:true}],
-      layerGroups : [{name:"Life",on:true},{name:"Pen",on:true}],
+      particleGroups : [{name:"Colours",on:true,dialogX:0,dialogY:0},{name:"Scale",on:true,dialogX:0,dialogY:0},{name:"Effects",on:true,dialogX:0,dialogY:0}],
+      layerGroups : [{name:"Life",on:true,dialogX:0,dialogY:0},{name:"Pen",on:true,dialogX:0,dialogY:0}]
     }
+  },
+  created(){
+    
   },
   mounted() {
     let vm = this;
+    // Get stored dialog positions
+    let pGroups = localStorage.getItem('particleGroups')
+    let lGroups = localStorage.getItem('layerGroups')
+    if(pGroups){
+      this.particleGroups = JSON.parse(pGroups)
+    }
+    if(lGroups){
+      this.layerGroups = JSON.parse(lGroups)
+    }
   },
   destroyed() {
   },
-  watch:{
-    ["layerProps.frequency.value"](){
-      this.changeFrequency()  
-    }
-  },
   methods: {
-
-    getWidth(){
-      return window.innerWidth
+    updateDefaultPreset(){
+      this.$emit('updateDefaultPreset')
     },
-    updateParameter(param) {
-      // this.layerProps.particleCreateProps['scaleX'] = param.x
+    getLayerDialogOptions(group){
+      return {
+        x:this.layerGroups.find(l=> l.name == group.name).dialogX,
+        y:this.layerGroups.find(l=> l.name == group.name).dialogY,
+        buttonClose:false
+      }
+    },
+    getParticleDialogOptions(group){
+      return {
+        x:this.particleGroups.find(l=> l.name == group.name).dialogX,
+        y:this.particleGroups.find(l=> l.name == group.name).dialogY,
+        buttonClose:false
+      }
+    },    
+    updateLayerGroups(d){
+      this.layerGroups.find(l=> l.name == d.id).dialogX = d.x
+      this.layerGroups.find(l=> l.name == d.id).dialogY = d.y
+      localStorage.setItem('layerGroups',JSON.stringify(this.layerGroups))
+    },
+    updateParticleGroups(d){
+      this.particleGroups.find(l=> l.name == d.id).dialogX = d.x
+      this.particleGroups.find(l=> l.name == d.id).dialogY = d.y
+      localStorage.setItem('particleGroups',JSON.stringify(this.particleGroups))
     },
     selectColor(col) {
       // this.layerProps.particleCreateProps.tint = parseInt(col.currentTarget.value.replace("#","0x"))
@@ -111,50 +151,51 @@ export default {
       if(this.preventPosition == false){
         this.layerProps.x.value = event.clientX
         this.layerProps.y.value = event.clientY
+        this.updateDefaultPreset()
       }
     },
     setPositionLimits(x,y){
       this.layerProps.x.max = x
       this.layerProps.y.max = y
     },
-    changeFrequency() {
-      clearInterval(this.updateLayer);
-      clearInterval(this.updateParticles);
-      this.init();
-    },
-    particlePropChange(item) {
-      if (item.audio == true) {
-        this.layerProps.particleCreateProps[item.prop].audioValue =
-          item.value;
-      } else {
-        this.layerProps.particleCreateProps[item.prop].value = item.value;
-      }
+    // particlePropChange(item) {
+    //   if (item.audio == true) {
+    //     this.layerProps.particleCreateProps[item.prop].audioValue =
+    //       item.value;
+    //   } else {
+    //     this.layerProps.particleCreateProps[item.prop].value = item.value;
+    //   }
 
-      console.log(item);
-    },
-    emitterPropChange(item) {
-      if (item.audio == true) {
-        this.layerProps[item.prop].audioValue = item.value;
-      } else {
-        this.layerProps[item.prop].value = item.value;
-      }
-    },
+    //   console.log(item);
+    // },
+    // emitterPropChange(item) {
+    //   if (item.audio == true) {
+    //     this.layerProps[item.prop].audioValue = item.value;
+    //   } else {
+    //     this.layerProps[item.prop].value = item.value;
+    //   }
+    // },
     setAudioInputVolume(v) {
       this.$audioShape.setAudioInputLevel(Number(v.currentTarget.value));
     },
     override(event){
       console.log("!")
       // event.preventBubble()
-    },
-    // startDragDialog(){
-    //   this.preventPosition = true
-    //   this.$emit('preventPosition',true)
-    // },
-    // endDragDialog(){
-    //   this.preventPosition = false
-    //   this.$emit('preventPosition',false)
-    //   console.log(e)
-    // }
+    }
+    
   }
 };
 </script>
+
+<style>
+  .dialog-drag {
+    background-color:#f0f0f070 !important;
+  }
+  .dialog-drag .dialog-body {
+    padding:0 !important;
+  } 
+ .dialog-drag .dialog-header {
+   background-color:#f0f0f070 !important;
+ }
+
+</style>

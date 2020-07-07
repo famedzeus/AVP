@@ -18,11 +18,11 @@
           <dialog-drag id="particles" title="Layer Select">
             Layer
             <input type="number" min="1" max="6" v-model="selectedLayer" />
-            <input type="checkbox" v-model="visual[selectedLayer-1].on.value" />
+            <input type="checkbox" @change="switchLayer" v-model="visual[selectedLayer-1].on.value" />
           </dialog-drag>
         </div>
         
-        <controls ref="controls" :on="visual[selectedLayer-1].on.value" :layerProps="visual[selectedLayer-1]"></controls>
+        <controls ref="controls" :on="visual[selectedLayer-1].on.value" :layer-props="visual[selectedLayer-1]" @updateDefaultPreset="updateDefaultPreset"></controls>
 
       </div>
 
@@ -74,18 +74,22 @@ export default {
   created(){
     let vm = this
     // get default visual
-    this.$store.dispatch('fetchVisual').then(response => {
-      vm.visual = response.data
-    })
+    vm.visual = JSON.parse(localStorage.getItem('defaultVisual'))
+    if(!vm.visual){
+      this.$store.dispatch('fetchDefaultVisual').then(response => {
+        vm.visual = response.data
+      })
+    }
   },
   methods: {
+    updateDefaultPreset(){
+      localStorage.setItem('defaultVisual',JSON.stringify(this.visual))
+    },
     createScene(scene) {
       this.sceneInstance = scene;
     },
     switchLayer() {
-      this.visual[this.selectedLayer - 1].on.value = !this.visual[
-        this.selectedLayer - 1
-      ].on.value;
+      this.updateDefaultPreset()
     },
     setPosition(event) {
       let nm = "layer-" + String(this.selectedLayer - 1);
@@ -96,6 +100,11 @@ export default {
     },
     setLayerProps(props) {
       this.layerProps = props;
+    }
+  },
+  watch: {
+    visual(){
+      console.log('change')
     }
   }
 };

@@ -38,7 +38,7 @@ export default {
         setGameConfig(context, config) {
             context.commit('setGameConfig', config)
         },
-        fetchVisual(context, name){
+        fetchDefaultVisual(context, name){
           return axios.get('assets/presets/default.json')
         }
     }

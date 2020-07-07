@@ -66,7 +66,6 @@ export default {
     this.gameConfig.height = window.innerHeight-4;
     this.$store.dispatch("setGameConfig", this.gameConfig);
     this.game = new Phaser.Game(this.gameConfig);
-    // this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     this.game.scale.parentIsWindow = true;    
     this.$store.dispatch("setGame", this.game);
   },
