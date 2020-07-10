@@ -2,8 +2,8 @@ import Phaser from "phaser";
 
 export class Particle {
 
-  constructor(objectKey, sceneInstance, layerProps, audioVolume, audioRange){
-    this.particle = sceneInstance.add.image(Number(layerProps.x.value), Number(layerProps.y.value), objectKey)
+  constructor(layerNumber,sceneInstance, layerProps, audioVolume, audioRange){
+    this.particle = sceneInstance.add.image(Number(layerProps.x.value), Number(layerProps.y.value), "image"+layerNumber)
     this.particle.blendMode = 1
     this.layerProps = layerProps
     this.audioVolume = audioVolume

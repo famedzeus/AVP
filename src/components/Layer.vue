@@ -15,7 +15,8 @@ export default {
     layerProps: Object,
     // id:Number,
     // selectedLayer:Number,
-    on:Boolean
+    on:Boolean,
+    layerNumber:Number
   },
   components: { },
 
@@ -68,6 +69,10 @@ export default {
 
       let vm = this
 
+      // load image
+      this.game.scene.scenes[0].load.image("image"+this.layerNumber, this.layerProps.image.value)
+      this.game.scene.scenes[0].load.start()
+
       this.layerProps.x.max = this.canvas.width
       this.layerProps.y.max = this.canvas.height
 
@@ -84,7 +89,7 @@ export default {
 
           this.particles.push(
             new Particle(
-              "star",
+              this.layerNumber,
               this.sceneInstance,
               this.layerProps,
               this.audioVolume,

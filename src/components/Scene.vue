@@ -7,6 +7,7 @@
         <Layer
           v-for="(layer,index) in visual"
           :key="index"
+          :layer-number="index"
           :ref="'layer-'+index"
           :on="visual[index].on.value"
           :scene-instance="sceneInstance"
@@ -14,15 +15,22 @@
           @layer-props="setLayerProps"
         ></Layer>
 
+        <!-- LAYER SELECT -->
         <div>
-          <dialog-drag id="particles" title="Layer Select">
-            Layer
+          <dialog-drag id="particles" title="Layer">
             <input type="number" min="1" max="6" v-model="selectedLayer" />
             <input type="checkbox" @change="switchLayer" v-model="visual[selectedLayer-1].on.value" />
           </dialog-drag>
         </div>
-        
-        <controls ref="controls" :on="visual[selectedLayer-1].on.value" :layer-props="visual[selectedLayer-1]" @updateDefaultPreset="updateDefaultPreset"></controls>
+
+        <!-- IMAGE SELECT -->
+        <div>
+          <dialog-drag title="Image">
+            <img width="100" height="100" style="background-color:black" :src="visual[selectedLayer-1].image.value" />
+          </dialog-drag>
+        </div>
+
+        <controls ref="controls" :on="visual[selectedLayer-1].on.value" :layer-props="visual[selectedLayer-1]" @changeImage="loadImage" @updateDefaultPreset="updateDefaultPreset"></controls>
 
       </div>
 
@@ -59,8 +67,8 @@ export default {
       "scene,",
       {
         preload: function preload() {
-          this.load.image("sky", "assets/sky.png");
-          this.load.image("star", "assets/star.png");
+          // this.load.image("sky", "assets/sky.png");
+          // this.load.image("star", "assets/star.png");
         },
         create: function create() {
           vm.createScene(this);
@@ -82,6 +90,9 @@ export default {
     }
   },
   methods: {
+    loadImage(){
+      this.game.load.image("star", "assets/star.png");
+    },
     updateDefaultPreset(){
       localStorage.setItem('defaultVisual',JSON.stringify(this.visual))
     },

@@ -1,5 +1,8 @@
 [
   {
+    "image":{
+      "value":"assets/star.png"
+    },
     "on": {
       "value": true
     },
@@ -47,6 +50,7 @@
     },
     "explode": {
       "group": "Pen",
+      "value": 0,
       "min": 0,
       "max": 100,
       "audioValue": 0
@@ -168,6 +172,7 @@
     },
     "explode": {
       "group": "Pen",
+      "value": 0,
       "min": 0,
       "max": 100,
       "audioValue": 0
@@ -289,6 +294,7 @@
     },
     "explode": {
       "group": "Pen",
+      "value": 0,
       "min": 0,
       "max": 100,
       "audioValue": 0
@@ -410,6 +416,7 @@
     },
     "explode": {
       "group": "Pen",
+      "value": 0,
       "min": 0,
       "max": 100,
       "audioValue": 0
@@ -531,6 +538,7 @@
     },
     "explode": {
       "group": "Pen",
+      "value": 0,
       "min": 0,
       "max": 100,
       "audioValue": 0
@@ -652,6 +660,7 @@
     },
     "explode": {
       "group": "Pen",
+      "value": 0,
       "min": 0,
       "max": 100,
       "audioValue": 0
